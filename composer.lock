@@ -89,47 +89,6 @@
             "time": "2017-10-18T19:48:59+00:00"
         },
         {
-            "name": "delight-im/db",
-            "version": "v1.3.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/delight-im/PHP-DB.git",
-                "reference": "7a03da20b5592fa445c10cd6c7245d51037292c4"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/delight-im/PHP-DB/zipball/7a03da20b5592fa445c10cd6c7245d51037292c4",
-                "reference": "7a03da20b5592fa445c10cd6c7245d51037292c4",
-                "shasum": ""
-            },
-            "require": {
-                "ext-pdo": "*",
-                "php": ">=5.6.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Delight\\Db\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "Safe and convenient SQL database access in a driver-agnostic way",
-            "homepage": "https://github.com/delight-im/PHP-DB",
-            "keywords": [
-                "database",
-                "mysql",
-                "pdo",
-                "pgsql",
-                "postgresql",
-                "sql",
-                "sqlite"
-            ],
-            "time": "2018-08-28T18:23:01+00:00"
-        },
-        {
             "name": "delight-im/http",
             "version": "v2.0.0",
             "source": {
