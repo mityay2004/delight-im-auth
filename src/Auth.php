@@ -234,12 +234,12 @@ class Auth extends UserManager {
      * @see confirmEmailAndSignIn
      */
     public function register($email, $password, $username = null, callable $callback = null) {
-        $this->throttle([ 'enumerateUsers', $this->getIpAddress() ], 1, (60 * 60), 75);
-        $this->throttle([ 'createNewAccount', $this->getIpAddress() ], 1, (60 * 60 * 12), 5, true);
+//        $this->throttle([ 'enumerateUsers', $this->getIpAddress() ], 1, (60 * 60), 75);
+//        $this->throttle([ 'createNewAccount', $this->getIpAddress() ], 1, (60 * 60 * 12), 5, true);
 
         $newUserId = $this->createUserInternal(false, $email, $password, $username, $callback);
 
-        $this->throttle([ 'createNewAccount', $this->getIpAddress() ], 1, (60 * 60 * 12), 5, false);
+//        $this->throttle([ 'createNewAccount', $this->getIpAddress() ], 1, (60 * 60 * 12), 5, false);
 
         return $newUserId;
     }
@@ -275,12 +275,12 @@ class Auth extends UserManager {
      * @see confirmEmailAndSignIn
      */
     public function registerWithUniqueUsername($email, $password, $username = null, callable $callback = null) {
-        $this->throttle([ 'enumerateUsers', $this->getIpAddress() ], 1, (60 * 60), 75);
-        $this->throttle([ 'createNewAccount', $this->getIpAddress() ], 1, (60 * 60 * 12), 5, true);
+//        $this->throttle([ 'enumerateUsers', $this->getIpAddress() ], 1, (60 * 60), 75);
+//        $this->throttle([ 'createNewAccount', $this->getIpAddress() ], 1, (60 * 60 * 12), 5, true);
 
         $newUserId = $this->createUserInternal(true, $email, $password, $username, $callback);
 
-        $this->throttle([ 'createNewAccount', $this->getIpAddress() ], 1, (60 * 60 * 12), 5, false);
+//        $this->throttle([ 'createNewAccount', $this->getIpAddress() ], 1, (60 * 60 * 12), 5, false);
 
         return $newUserId;
     }
@@ -300,7 +300,7 @@ class Auth extends UserManager {
      * @throws AuthError if an internal problem occurred (do *not* catch)
      */
     public function login($email, $password, $rememberDuration = null, callable $onBeforeSuccess = null) {
-        $this->throttle([ 'attemptToLogin', 'email', $email ], 500, (60 * 60 * 24), null, true);
+//        $this->throttle([ 'attemptToLogin', 'email', $email ], 500, (60 * 60 * 24), null, true);
 
         $this->authenticateUserInternal($password, $email, null, $rememberDuration, $onBeforeSuccess);
     }
@@ -325,7 +325,7 @@ class Auth extends UserManager {
      * @throws AuthError if an internal problem occurred (do *not* catch)
      */
     public function loginWithUsername($username, $password, $rememberDuration = null, callable $onBeforeSuccess = null) {
-        $this->throttle([ 'attemptToLogin', 'username', $username ], 500, (60 * 60 * 24), null, true);
+//        $this->throttle([ 'attemptToLogin', 'username', $username ], 500, (60 * 60 * 24), null, true);
 
         $this->authenticateUserInternal($password, null, $username, $rememberDuration, $onBeforeSuccess);
     }
@@ -356,9 +356,9 @@ class Auth extends UserManager {
                 return false;
             }
 
-            $this->throttle([ 'reconfirmPassword', $this->getIpAddress() ], 3, (60 * 60), 4, true);
+//            $this->throttle([ 'reconfirmPassword', $this->getIpAddress() ], 3, (60 * 60), 4, true);
 
-            $expectedHash = $this->db
+            $expectedHash = $this->CI->db
                     ->query(
                         'SELECT password
                             FROM ' . $this->makeTableName('users')
@@ -371,7 +371,7 @@ class Auth extends UserManager {
                 $validated = \password_verify($password, $expectedHash);
 
                 if (!$validated) {
-                    $this->throttle([ 'reconfirmPassword', $this->getIpAddress() ], 3, (60 * 60), 4, false);
+//                    $this->throttle([ 'reconfirmPassword', $this->getIpAddress() ], 3, (60 * 60), 4, false);
                 }
 
                 return $validated;
@@ -610,9 +610,9 @@ class Auth extends UserManager {
      * @throws AuthError if an internal problem occurred (do *not* catch)
      */
     public function confirmEmail($selector, $token) {
-        $this->throttle([ 'confirmEmail', $this->getIpAddress() ], 5, (60 * 60), 10);
-        $this->throttle([ 'confirmEmail', 'selector', $selector ], 3, (60 * 60), 10);
-        $this->throttle([ 'confirmEmail', 'token', $token ], 3, (60 * 60), 10);
+//        $this->throttle([ 'confirmEmail', $this->getIpAddress() ], 5, (60 * 60), 10);
+//        $this->throttle([ 'confirmEmail', 'selector', $selector ], 3, (60 * 60), 10);
+//        $this->throttle([ 'confirmEmail', 'token', $token ], 3, (60 * 60), 10);
 
         $confirmationData = $this->CI->db
                 ->query(
@@ -786,7 +786,7 @@ class Auth extends UserManager {
         if ($this->isLoggedIn()) {
             $newEmail = self::validateEmailAddress($newEmail);
 
-            $this->throttle([ 'enumerateUsers', $this->getIpAddress() ], 1, (60 * 60), 75);
+//            $this->throttle([ 'enumerateUsers', $this->getIpAddress() ], 1, (60 * 60), 75);
 
             $existingUsersWithNewEmail = $this->CI->db
                     ->where('email', $newEmail)
@@ -808,8 +808,8 @@ class Auth extends UserManager {
                 throw new EmailNotVerifiedException();
             }
 
-            $this->throttle([ 'requestEmailChange', 'userId', $this->getUserId() ], 1, (60 * 60 * 24));
-            $this->throttle([ 'requestEmailChange', $this->getIpAddress() ], 1, (60 * 60 * 24), 3);
+//            $this->throttle([ 'requestEmailChange', 'userId', $this->getUserId() ], 1, (60 * 60 * 24));
+//            $this->throttle([ 'requestEmailChange', $this->getIpAddress() ], 1, (60 * 60 * 24), 3);
 
             $this->createConfirmationRequest($this->getUserId(), $newEmail, $callback);
         }
@@ -835,7 +835,7 @@ class Auth extends UserManager {
      * @throws TooManyRequestsException if the number of allowed attempts/requests has been exceeded
      */
     public function resendConfirmationForEmail($email, callable $callback) {
-        $this->throttle([ 'enumerateUsers', $this->getIpAddress() ], 1, (60 * 60), 75);
+//        $this->throttle([ 'enumerateUsers', $this->getIpAddress() ], 1, (60 * 60), 75);
 
         $this->resendConfirmationForColumnValue('email', $email, $callback);
     }
@@ -894,8 +894,8 @@ class Auth extends UserManager {
             throw new ConfirmationRequestNotFound();
         }
 
-        $this->throttle([ 'resendConfirmation', 'userId', $latestAttempt['user_id'] ], 1, (60 * 60 * 6));
-        $this->throttle([ 'resendConfirmation', $this->getIpAddress() ], 4, (60 * 60 * 24 * 7), 2);
+//        $this->throttle([ 'resendConfirmation', 'userId', $latestAttempt['user_id'] ], 1, (60 * 60 * 6));
+//        $this->throttle([ 'resendConfirmation', $this->getIpAddress() ], 4, (60 * 60 * 24 * 7), 2);
 
         $this->createConfirmationRequest(
             $latestAttempt['user_id'],
@@ -928,7 +928,7 @@ class Auth extends UserManager {
     public function forgotPassword($email, callable $callback, $requestExpiresAfter = null, $maxOpenRequests = null) {
         $email = self::validateEmailAddress($email);
 
-        $this->throttle([ 'enumerateUsers', $this->getIpAddress() ], 1, (60 * 60), 75);
+//        $this->throttle([ 'enumerateUsers', $this->getIpAddress() ], 1, (60 * 60), 75);
 
         if ($requestExpiresAfter === null) {
             // use six hours as the default
@@ -962,8 +962,8 @@ class Auth extends UserManager {
         $openRequests = (int) $this->getOpenPasswordResetRequests($userData['id']);
 
         if ($openRequests < $maxOpenRequests) {
-            $this->throttle([ 'requestPasswordReset', $this->getIpAddress() ], 4, (60 * 60 * 24 * 7), 2);
-            $this->throttle([ 'requestPasswordReset', 'user', $userData['id'] ], 4, (60 * 60 * 24 * 7), 2);
+//            $this->throttle([ 'requestPasswordReset', $this->getIpAddress() ], 4, (60 * 60 * 24 * 7), 2);
+//            $this->throttle([ 'requestPasswordReset', 'user', $userData['id'] ], 4, (60 * 60 * 24 * 7), 2);
 
             $this->createPasswordResetRequest($userData['id'], $requestExpiresAfter, $callback);
         }
@@ -990,8 +990,8 @@ class Auth extends UserManager {
      * @throws AuthError if an internal problem occurred (do *not* catch)
      */
     private function authenticateUserInternal($password, $email = null, $username = null, $rememberDuration = null, callable $onBeforeSuccess = null) {
-        $this->throttle([ 'enumerateUsers', $this->getIpAddress() ], 1, (60 * 60), 75);
-        $this->throttle([ 'attemptToLogin', $this->getIpAddress() ], 4, (60 * 60), 5, true);
+//        $this->throttle([ 'enumerateUsers', $this->getIpAddress() ], 1, (60 * 60), 75);
+//        $this->throttle([ 'attemptToLogin', $this->getIpAddress() ], 4, (60 * 60), 5, true);
 
         $columnsToFetch = [ 'id', 'email', 'password', 'verified', 'username', 'status', 'roles_mask', 'force_logout' ];
 
@@ -1045,13 +1045,13 @@ class Auth extends UserManager {
 
                     return;
                 } else {
-                    $this->throttle([ 'attemptToLogin', $this->getIpAddress() ], 4, (60 * 60), 5, false);
+//                    $this->throttle([ 'attemptToLogin', $this->getIpAddress() ], 4, (60 * 60), 5, false);
 
                     if (isset($email)) {
-                            $this->throttle([ 'attemptToLogin', 'email', $email ], 500, (60 * 60 * 24), null, false);
+//                            $this->throttle([ 'attemptToLogin', 'email', $email ], 500, (60 * 60 * 24), null, false);
                     }
                     elseif (isset($username)) {
-                            $this->throttle([ 'attemptToLogin', 'username', $username ], 500, (60 * 60 * 24), null, false);
+//                            $this->throttle([ 'attemptToLogin', 'username', $username ], 500, (60 * 60 * 24), null, false);
                     }
 
                     throw new AttemptCancelledException();
@@ -1061,12 +1061,12 @@ class Auth extends UserManager {
             }
         }
         else {
-            $this->throttle([ 'attemptToLogin', $this->getIpAddress() ], 4, (60 * 60), 5, false);
+//            $this->throttle([ 'attemptToLogin', $this->getIpAddress() ], 4, (60 * 60), 5, false);
 
             if (isset($email)) {
-                $this->throttle([ 'attemptToLogin', 'email', $email ], 500, (60 * 60 * 24), null, false);
+//                $this->throttle([ 'attemptToLogin', 'email', $email ], 500, (60 * 60 * 24), null, false);
             } elseif (isset($username)) {
-                $this->throttle([ 'attemptToLogin', 'username', $username ], 500, (60 * 60 * 24), null, false);
+//                $this->throttle([ 'attemptToLogin', 'username', $username ], 500, (60 * 60 * 24), null, false);
             }
 
             // we cannot authenticate the user due to the password being wrong
@@ -1166,9 +1166,9 @@ class Auth extends UserManager {
      * @throws AuthError if an internal problem occurred (do *not* catch)
      */
     public function resetPassword($selector, $token, $newPassword) {
-        $this->throttle([ 'resetPassword', $this->getIpAddress() ], 5, (60 * 60), 10);
-        $this->throttle([ 'resetPassword', 'selector', $selector ], 3, (60 * 60), 10);
-        $this->throttle([ 'resetPassword', 'token', $token ], 3, (60 * 60), 10);
+//        $this->throttle([ 'resetPassword', $this->getIpAddress() ], 5, (60 * 60), 10);
+//        $this->throttle([ 'resetPassword', 'selector', $selector ], 3, (60 * 60), 10);
+//        $this->throttle([ 'resetPassword', 'token', $token ], 3, (60 * 60), 10);
 
         $resetData = $this->CI->db
                 ->query(
