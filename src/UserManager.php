@@ -149,20 +149,24 @@ abstract class UserManager
         $password = \password_hash($password, \PASSWORD_DEFAULT);
         $verified = \is_callable($callback) ? 0 : 1;
 
-        try {
-            $this->CI->db
-                    ->insert( $this->makeTableName('users'),
-                        [
-                            'email' => $email,
-                            'password' => $password,
-                            'username' => $username,
-                            'verified' => $verified,
-                            'registered' => \time()
-                        ]
-            );
-        }
+        $db_debug = $this->db->db_debug;
+        $this->db->db_debug = false;
+        
+        $res = $this->CI->db
+                ->insert( $this->makeTableName('users'),
+                    [
+                        'email' => $email,
+                        'password' => $password,
+                        'username' => $username,
+                        'verified' => $verified,
+                        'registered' => \time()
+                    ]
+        );
+        
+        $this->db->db_debug = $db_debug;
+        
         // if we have a duplicate entry
-        catch (IntegrityConstraintViolationException $e) {
+        if ($res !== TRUE) {
                 throw new UserAlreadyExistsException();
         }
         
