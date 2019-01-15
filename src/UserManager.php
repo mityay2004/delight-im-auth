@@ -268,15 +268,15 @@ abstract class UserManager
      * @throws InvalidEmailException if the email address has been invalid
      */
     protected static function validateEmailAddress($email) {
-        if (empty($email)) {
-            throw new InvalidEmailException();
-        }
-
-        $email = \trim($email);
-
-        if (!\filter_var($email, \FILTER_VALIDATE_EMAIL)) {
-            throw new InvalidEmailException();
-        }
+//        if (empty($email)) {
+//            throw new InvalidEmailException();
+//        }
+//
+//        $email = \trim($email);
+//
+//        if (!\filter_var($email, \FILTER_VALIDATE_EMAIL)) {
+//            throw new InvalidEmailException();
+//        }
 
         return $email;
     }
@@ -289,15 +289,15 @@ abstract class UserManager
      * @throws InvalidPasswordException if the password has been invalid
      */
     protected static function validatePassword($password) {
-        if (empty($password)) {
-            throw new InvalidPasswordException();
-        }
-
-        $password = \trim($password);
-
-        if (\strlen($password) < 1) {
-            throw new InvalidPasswordException();
-        }
+//        if (empty($password)) {
+//            throw new InvalidPasswordException();
+//        }
+//
+//        $password = \trim($password);
+//
+//        if (\strlen($password) < 1) {
+//            throw new InvalidPasswordException();
+//        }
 
         return $password;
     }

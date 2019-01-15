@@ -54,7 +54,7 @@ class Auth extends UserManager {
         $remoteAddress = $this->CI->input->server('REMOTE_ADDR', TRUE);
         $this->ipAddress = !empty($ipAddress) ? $ipAddress : (isset($remoteAddress) ? $remoteAddress : null);
         $this->throttling = isset($throttling) ? (bool) $throttling : true;
-        $this->sessionResyncInterval = isset($sessionResyncInterval) ? ((int) $sessionResyncInterval) : (60 * 5);
+        $this->sessionResyncInterval = isset($sessionResyncInterval) ? ((int) $sessionResyncInterval) : config_item('sessionResyncInterval');
         $this->rememberCookieName = self::createRememberCookieName();
 
         $this->initSessionIfNecessary();
@@ -365,7 +365,8 @@ class Auth extends UserManager {
                             . ' WHERE id = ?',
                         [ $this->getUserId() ]
                     )
-                    ->row_array();
+                    ->row()
+                    ->password;
 
             if (!empty($expectedHash)) {
                 $validated = \password_verify($password, $expectedHash);
