@@ -15,7 +15,7 @@ use Delight\Db\Throwable\Error;
 require_once __DIR__ . '/Exceptions.php';
 
 /** Component that can be used for administrative tasks by privileged and authorized users */
-final class Administration extends UserManager 
+class Administration extends UserManager 
 {
 
     private $CI;
